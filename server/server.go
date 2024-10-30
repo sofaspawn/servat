@@ -1,44 +1,71 @@
-package main;
+package main
 
 import (
 	"fmt"
-	//"io"
 	"log"
 	"net"
+	"strings"
+	"sync"
 )
 
-const address string = "localhost:6969";
+const address string = "localhost:6969"
 
-func main(){
-    chats := make([]byte, 10*1024);
+var (
+	chats []string
+	mu    sync.Mutex
+)
 
-    l, err := net.Listen("tcp4", address);
+func main() {
+	l, err := net.Listen("tcp", address)
+	if err != nil {
+		log.Fatal("LISTEN: ", err)
+	}
+	defer l.Close()
+	log.Printf("Listening on: %s\n", address)
 
-    if err!=nil{
-        log.Fatal("LISTEN: ", err);
-    } else {
-        log.Printf("Listening on: http://%s\n", address);
-    }
-    defer l.Close();
-    for {
-        c, err := l.Accept();
-        if err!=nil{
-            log.Fatal("cannot accept connection on port: ", address);
-        }
-        go handleConnection(c, &chats);
-    }
+	for {
+		c, err := l.Accept()
+		if err != nil {
+			log.Println("cannot accept connection: ", err)
+			continue
+		}
+		go handleConnection(c)
+	}
 }
 
-func handleConnection(c net.Conn, chats *[]byte){
-    fmt.Printf("Serving on %s\n", c.RemoteAddr().String());
-    packet := make([]byte, 4096);
-    //tmp := make([]byte, 4096);
-    _, err := c.Read(packet);
-    if err!=nil{
-        log.Fatal("ERROR: ", err);
-    }
-    defer c.Close();
-    *chats = append(*chats, packet...)
-    num, _ := c.Write(*chats);
-    log.Printf("wrote back %d bytes\n", num);
+func handleConnection(c net.Conn) {
+	defer c.Close()
+	fmt.Printf("Serving on %s\n", c.RemoteAddr().String())
+
+	for {
+		packet := make([]byte, 4096)
+		n, err := c.Read(packet)
+		if err != nil {
+			log.Println("ERROR reading from connection: ", err)
+			return
+		}
+		if n == 0 {
+			// Connection closed by the client
+			return
+		}
+
+		// Process the incoming message
+		message := strings.TrimSpace(string(packet[:n]))
+		if message != "" {
+			mu.Lock()
+			chats = append(chats, message)
+			mu.Unlock()
+		}
+
+		// Send back the list of messages
+		mu.Lock()
+		response := strings.Join(chats, "\n") + "\n"
+		mu.Unlock()
+		_, err = c.Write([]byte(response))
+		if err != nil {
+			log.Println("ERROR writing to connection: ", err)
+			return
+		}
+	}
 }
+
