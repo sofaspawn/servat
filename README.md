@@ -8,6 +8,7 @@
 4. more...
 
 ## TODO:
-- [ ] readup on servers in golang
-- [ ] setup a basic server
+- [x] readup on servers in golang
+- [x] setup a basic server
+- [ ] create a client
 - [ ] make chat ui in terminal

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"log"
-	"net"
-	"os"
+    "log"
+    "net"
+    "os"
 )
 
 const (
@@ -13,20 +13,31 @@ const (
 )
 
 func main() {
-    l, err := net.Listen(CONN_TYPE, CONN_HOST+":"+CONN_PORT);
-    if err!=nil{
-        log.Fatalln(err);
-        os.Exit(1);
+    l, err := net.Listen(CONN_TYPE, CONN_HOST+":"+CONN_PORT)
+    if err != nil {
+        log.Fatalln("Error listening:", err.Error())
+        os.Exit(1)
     }
-    defer l.Close();
-    for{
-        conn, err := l.Accept();
-        if err!=nil{
-            log.Fatalln(err);
+    defer l.Close()
+    log.Printf("Listening on %s:%s\n", CONN_HOST, CONN_PORT)
+    for {
+        conn, err := l.Accept()
+        if err != nil {
+            log.Fatalln("Error accepting: ", err.Error())
         }
-        buf := make([]byte, 1024);
-        conn.Read(buf);
+        go handleRequest(conn)
     }
 }
 
-func handleRequest
+func handleRequest(conn net.Conn) {
+    log.Printf("handling connection: %s\n", conn.RemoteAddr().String())
+    buf := make([]byte, 1024)
+    _, err := conn.Read(buf)
+    if err != nil {
+        log.Fatalln("Error reading:", err.Error())
+    }
+    buf = append(buf, byte('\n'))
+    //conn.Write([]byte("Message received."))
+    conn.Write(buf)
+    conn.Close()
+}
