@@ -39,11 +39,11 @@ func handleRequest(conn net.Conn, backup *[][]byte) {
 	if err != nil {
 		log.Fatalln("Error reading:", err.Error())
 	}
-	//buf = append(buf, byte('\n'))
+	buf = append(buf, byte('\n'))
 	*backup = append(*backup, buf)
 	//conn.Write([]byte("Message received."))
 	ret := createResponse(backup)
-	log.Println(string(ret))
+	//log.Println(string(ret))
 	conn.Write(ret)
 	conn.Close()
 }

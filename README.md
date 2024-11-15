@@ -10,5 +10,5 @@
 ## TODO:
 - [x] readup on servers in golang
 - [x] setup a basic server
-- [ ] create a client
+- [x] create a client
 - [ ] make chat ui in terminal

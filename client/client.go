@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net"
+	"strings"
 )
 
 const message = "imp message to be sent"
@@ -22,10 +23,12 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	reply := make([]byte, 4096)
+	reply := make([]byte, 1024*100)
 	_, err = conn.Read(reply)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	log.Printf("> %s\n", string(reply))
+	for _, msg := range strings.Split(string(reply), "\n") {
+		log.Printf("> %s", msg)
+	}
 }
