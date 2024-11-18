@@ -11,4 +11,4 @@
 - [x] readup on servers in golang
 - [x] setup a basic server
 - [x] create a client
-- [ ] make chat ui in terminal
+- [ ] make a proper client with ui
