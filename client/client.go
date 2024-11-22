@@ -8,7 +8,7 @@ import (
 
 const message = "imp message to be sent"
 
-func handleError(err error){
+func handleError(err *error){
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -19,17 +19,17 @@ func main() {
 	addr, err := net.ResolveTCPAddr("tcp", servAddr)
 	conn, err := net.DialTCP("tcp", nil, addr)
 
-    handleError(err)
+    handleError(&err)
 
 	defer conn.Close()
 	_, err = conn.Write([]byte(message))
 
-    handleError(err)
+    handleError(&err)
 
 	reply := make([]byte, 1024*100)
 	_, err = conn.Read(reply)
 
-    handleError(err)
+    handleError(&err)
 
 	for _, msg := range strings.Split(string(reply), "\n") {
 		log.Printf("> %s", msg)
