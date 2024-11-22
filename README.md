@@ -1,5 +1,6 @@
 # SERVAT
 - communication server in golang
+- setup a go api server and use react to interact with the server using http requests
 
 ## FEATURES:
 1. yt-like live chat (using websockets)
@@ -11,4 +12,4 @@
 - [x] readup on servers in golang
 - [x] setup a basic server
 - [x] create a client
-- [ ] make a proper client with ui
+- [ ] make a proper client with ui -> make a web frontend
