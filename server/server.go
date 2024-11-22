@@ -6,11 +6,15 @@ import (
     "github.com/gorilla/mux"
 )
 
+const port = ":8000"
+
 func main() {
 
     //chats := make([]string, 1024)
 
     router := mux.NewRouter()
+
+    fmt.Printf("serving on http://localhost%s\n", port)
 
     router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request){
         fmt.Fprint(w, "Hello World")
@@ -18,7 +22,7 @@ func main() {
 
     router.HandleFunc("/chats", handleChat).Methods(http.MethodGet)
 
-    http.ListenAndServe(":8000", router)
+    http.ListenAndServe(port, router)
 }
 
 func getChats() []string {
