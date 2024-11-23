@@ -1,15 +1,13 @@
 # SERVAT
-- communication server in golang
-- setup a go api server and use react to interact with the server using http requests
+- create a video livestreaming platform. 
+
+# Goals
+1. learn video encoding
+2. learn about livestreaming
+3. build something around it
 
 ## FEATURES:
-1. yt-like live chat (using websockets)
-2. user authorization and identification
-3. special perks and ip bans
-4. more...
+1. ...
 
 ## TODO:
-- [x] readup on servers in golang
-- [x] setup a basic server
-- [x] create a client
-- [ ] make a proper client with ui -> make a web frontend
+- [ ] not decided yet

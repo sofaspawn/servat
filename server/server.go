@@ -4,7 +4,6 @@ import (
     "fmt"
     "net/http"
     "github.com/gorilla/mux"
-    //small change
 )
 
 const port = ":8000"
