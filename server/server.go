@@ -1,9 +1,8 @@
 package main
 
-import (
-)
-
-
 func main() {
+    a := 2
+    println(a)
 }
+
 
