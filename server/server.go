@@ -9,7 +9,7 @@ import (
 func streamVideo(w http.ResponseWriter, r *http.Request){
     cmd := exec.Command("ffmpeg",
     "-re",
-    "-i", "input.mp4",        // Input video file
+    "-i", "chungus.mp4",        // Input video file
     "-c:v", "libx264",        // Encode video using H.264
     "-preset", "ultrafast",   // Encoding speed/quality trade-off
     "-f", "mpegts",           // Output format
